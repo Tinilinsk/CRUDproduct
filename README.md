@@ -45,42 +45,6 @@ A modern, cross-platform mobile application built with .NET MAUI for managing pr
    ```bash
    git clone https://github.com/yourusername/maui-products-manager.git
    cd maui-products-manager
-Restore dependencies
-
-bash
-dotnet restore
-Build the project
-
-bash
-dotnet build
-Run the application
-
-bash
-# For Android
-dotnet run --framework net8.0-android
-
-# For iOS (requires Mac)
-dotnet run --framework net8.0-ios
-
-# For Windows
-dotnet run --framework net8.0-windows10.0.19041.0
-📱 Platform-Specific Setup
-Android
-Enable Developer Options on your device
-
-Enable USB Debugging
-
-Connect device via USB or use Android Emulator
-
-iOS
-Requires Mac with Xcode for development
-
-For testing on device: Free Apple Developer account or AltStore
-
-Windows
-No additional setup required
-
-Works on Windows 10/11
 
 🎯 Usage
 Adding a Product
