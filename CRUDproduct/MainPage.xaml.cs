@@ -114,6 +114,12 @@ namespace CRUDproduct
             var product = (Product)swipeItem.BindingContext;
             await DeleteProduct(product);
         }
+        private async void OnSwipeEditInvoked(object sender, EventArgs e)
+        {
+            var swipeItem = (SwipeItem)sender;
+            var product = (Product)swipeItem.BindingContext;
+            await EditProduct(product);
+        }
         private async Task CopyProductData(Product product)
         {
             var text = $"{product.Name} - {product.Price:C} - {product.Category}";
