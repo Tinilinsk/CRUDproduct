@@ -40,6 +40,24 @@ namespace CRUDproduct
             }
         }
 
+        private async Task EditProduct(Product product)
+        {
+            var editPopup = new EditProductPopup(product);
+            await Navigation.PushModalAsync(editPopup);
+
+            var result = await editPopup.ResultTask.Task;
+            if (result != null)
+            {
+                // Находим и обновляем продукт в коллекции
+                var index = _product.IndexOf(product);
+                if (index != -1)
+                {
+                    _product[index] = result;
+                    await DisplayAlert("Success", "Product updated successfully", "OK");
+                }
+            }
+        }
+
         private async void OnMenuButtonClicked(object sender, EventArgs e)
         {
             var button = (Button)sender;
@@ -70,10 +88,6 @@ namespace CRUDproduct
                     await CopyProductData(product);
                     break;
             }
-        }
-        private async Task EditProduct(Product product)
-        {
-
         }
         private async Task ShowProductDetails(Product product)
         {
