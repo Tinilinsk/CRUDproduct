@@ -19,7 +19,7 @@ namespace CRUDproduct
 
         public async Task ShowInputProduct()
         {
-            var popup = new NewPage1();
+            var popup = new AddProduct();
 
             await Navigation.PushModalAsync(popup);
 

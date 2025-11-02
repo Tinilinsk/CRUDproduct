@@ -1,9 +1,9 @@
 namespace CRUDproduct;
 
-public partial class NewPage1 : ContentPage
+public partial class AddProduct : ContentPage
 {
 	public TaskCompletionSource<(string, string, string)> ResultTask { get; } = new();
-	public NewPage1()
+	public AddProduct()
 	{
 		InitializeComponent();
 	}
