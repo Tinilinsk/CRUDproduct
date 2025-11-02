@@ -1,15 +1,20 @@
-﻿using System.ComponentModel;
+﻿using CRUDproduct.Models;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace CRUDproduct
 {
     public partial class MainPage : ContentPage
     {
+        private ObservableCollection<Product> _product = new();
+        private int _nextId = 1;
 
-
+        public ObservableCollection<Product> Products { get { return _product; } }
         public MainPage()
         {
             InitializeComponent();
+            BindingContext = this;
         }
 
         private async void AddProductClicked(object sender, EventArgs e)
@@ -23,11 +28,15 @@ namespace CRUDproduct
 
             await Navigation.PushModalAsync(popup);
 
-            var (_nameProduct, _price, _category) = await popup.ResultTask.Task;
+            var newProduct = await popup.ResultTask.Task;
 
-            if (!string.IsNullOrEmpty(_nameProduct) && !string.IsNullOrEmpty(_price) && !string.IsNullOrEmpty(_category))
+            if (newProduct != null && !string.IsNullOrWhiteSpace(newProduct.Name))
             {
-                Name.Text = _nameProduct;
+                newProduct.Id = _nextId++;
+                newProduct.CreatedDate = DateTime.Now;
+
+                _product.Add(newProduct);
+
             }
         }
     }

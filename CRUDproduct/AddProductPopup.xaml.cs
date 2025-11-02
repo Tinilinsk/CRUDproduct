@@ -1,8 +1,8 @@
 namespace CRUDproduct;
-
+using CRUDproduct.Models;
 public partial class AddProduct : ContentPage
 {
-	public TaskCompletionSource<(string, string, string)> ResultTask { get; } = new();
+	public TaskCompletionSource<Product> ResultTask { get; } = new();
 	public AddProduct()
 	{
 		InitializeComponent();
@@ -10,14 +10,20 @@ public partial class AddProduct : ContentPage
 
 	void OnAddClicked(object sender, EventArgs e)
 	{
-		var result = (NameProduct.Text, Price.Text, Category.Text);
-		ResultTask.TrySetResult(result);
+        var newProduct = new Product
+        {
+            Name = NameProduct.Text,
+            Category = Category.Text,
+            Price = decimal.TryParse(Price.Text, out decimal price) ? price : 0
+        };	
+
+		ResultTask.TrySetResult(newProduct);
 		Navigation.PopModalAsync();
 	}
 
 	void OnCancelClicked(object sender, EventArgs e)
 	{
-        ResultTask.TrySetResult((null, null, null));
+        ResultTask.TrySetResult(null);
 		Navigation.PopModalAsync();
 
     }

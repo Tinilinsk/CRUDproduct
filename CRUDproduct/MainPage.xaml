@@ -4,7 +4,23 @@
              x:Class="CRUDproduct.MainPage">
 
     <VerticalStackLayout>
-        <Label>Products List</Label>
+        <CollectionView ItemsSource="{Binding Products}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="LightGray" CornerRadius="10" Padding="15" Margin="5">
+                        <Grid ColumnDefinitions="*,Auto,Auto">
+                            <HorizontalStackLayout Grid.Column="0" Spacing="5" VerticalOptions="Center">
+                                <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"/>
+                                <Label Text="-" FontSize="16"/>
+                                <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="16" TextColor="Green"/>
+                                <Label Text="-" FontSize="16"/>
+                                <Label Text="{Binding Category}" FontSize="14" TextColor="Gray"/>
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
         <Label
             x:Name="Name"></Label>
         <Button
