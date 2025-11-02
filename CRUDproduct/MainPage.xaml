@@ -11,8 +11,7 @@
                         <SwipeView.RightItems>
                             <SwipeItem Text="Edit" BackgroundColor="Orange"
                                />
-                            <SwipeItem Text="Delete" BackgroundColor="Red"
-                               />
+                            <SwipeItem Text="Delete" BackgroundColor="Red" Invoked="OnSwipeDeleteInvoked"/>
                         </SwipeView.RightItems>
                         <Frame BorderColor="LightGray" CornerRadius="10" Padding="15" Margin="5">
 

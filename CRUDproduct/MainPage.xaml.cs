@@ -96,7 +96,12 @@ namespace CRUDproduct
                 await DisplayAlert("Success", "Product deleted", "OK");
             }
         }
-
+        private async void OnSwipeDeleteInvoked(object sender, EventArgs e)
+        {
+            var swipeItem = (SwipeItem)sender;
+            var product = (Product)swipeItem.BindingContext;
+            await DeleteProduct(product);
+        }
         private async Task CopyProductData(Product product)
         {
             var text = $"{product.Name} - {product.Price:C} - {product.Category}";
