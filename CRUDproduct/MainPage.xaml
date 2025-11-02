@@ -4,6 +4,9 @@
              x:Class="CRUDproduct.MainPage">
 
     <VerticalStackLayout>
+        <Label
+            Text="Products:"
+            FontSize="Header"></Label>
         <CollectionView ItemsSource="{Binding Products}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
@@ -39,11 +42,10 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Label
-            x:Name="Name"></Label>
-        <Button
-            Text="Add product"
-            Clicked="AddProductClicked"></Button>
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Button Text="Add Product" Grid.Column="0" Clicked="AddProductClicked" BackgroundColor="Green"/>
+            <Button Text="Export CSV" Grid.Column="1" Clicked="OnExportCsvClicked" BackgroundColor="Blue"/>
+        </Grid>
     </VerticalStackLayout>
 
 </ContentPage>

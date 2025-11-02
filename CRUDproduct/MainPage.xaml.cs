@@ -9,12 +9,29 @@ namespace CRUDproduct
     {
         private ObservableCollection<Product> _product = new();
         private int _nextId = 1;
+        private readonly CsvExportService _csvExportService;
 
         public ObservableCollection<Product> Products { get { return _product; } }
+        public int ProductsCount => _product.Count;
         public MainPage()
         {
             InitializeComponent();
             BindingContext = this;
+
+            _csvExportService = new CsvExportService(); 
+        }
+        private async void OnExportCsvClicked(object sender, EventArgs e)
+        {
+            try
+            {
+
+                var exportService = new CsvExportService();
+                await exportService.ExportToCsvAsync(_product);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Export failed: {ex.Message}", "OK");
+            }
         }
 
         private async void AddProductClicked(object sender, EventArgs e)
