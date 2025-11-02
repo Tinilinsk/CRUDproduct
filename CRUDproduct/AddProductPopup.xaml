@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CRUDproduct.NewPage1"
+             Title="Add Product">
+    <VerticalStackLayout>
+        <Label
+            Text="Enter product name:"
+            FontSize="Medium"
+            Margin="10"/>
+        <Entry
+            x:Name="NameProduct"
+            ></Entry>
+        <Label
+            Text="Price:"
+            FontSize="Medium"
+            Margin="10"></Label>
+        <Entry
+            x:Name="Price"></Entry>
+        <Label
+            Text="Category:"
+            FontSize="Medium"
+            Margin="10"></Label>
+        <Entry
+            x:Name="Category"></Entry>
+        <Button x:Name="CancelButton" 
+                        Text="Cancel" 
+                        Grid.Column="0"
+                        Clicked="OnCancelClicked"/>
+        <Button x:Name="OkButton" 
+                        Text="OK" 
+                        Grid.Column="1"
+                        Clicked="OnOkClicked"/>
+    </VerticalStackLayout>
+</ContentPage>
