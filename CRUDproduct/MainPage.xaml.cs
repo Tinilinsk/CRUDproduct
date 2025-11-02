@@ -14,9 +14,21 @@ namespace CRUDproduct
 
         private async void AddProductClicked(object sender, EventArgs e)
         {
+            await ShowInputProduct();
+        }
 
-            string result = await DisplayPromptAsync("Question 1", "What's your name?");
-            Name.Text = result;
+        public async Task ShowInputProduct()
+        {
+            var popup = new NewPage1();
+
+            await Navigation.PushModalAsync(popup);
+
+            var (_nameProduct, _price, _category) = await popup.ResultTask.Task;
+
+            if (!string.IsNullOrEmpty(_nameProduct) && !string.IsNullOrEmpty(_price) && !string.IsNullOrEmpty(_category))
+            {
+                Name.Text = _nameProduct;
+            }
         }
     }
 

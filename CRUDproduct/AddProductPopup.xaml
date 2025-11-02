@@ -28,8 +28,8 @@
                         Grid.Column="0"
                         Clicked="OnCancelClicked"/>
         <Button x:Name="OkButton" 
-                        Text="OK" 
+                        Text="Add" 
                         Grid.Column="1"
-                        Clicked="OnOkClicked"/>
+                        Clicked="OnAddClicked"/>
     </VerticalStackLayout>
 </ContentPage>
