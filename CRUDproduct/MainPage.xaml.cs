@@ -48,7 +48,6 @@ namespace CRUDproduct
             var result = await editPopup.ResultTask.Task;
             if (result != null)
             {
-                // Находим и обновляем продукт в коллекции
                 var index = _product.IndexOf(product);
                 if (index != -1)
                 {
@@ -63,7 +62,6 @@ namespace CRUDproduct
             var button = (Button)sender;
             var product = (Product)button.CommandParameter;
 
-            // Show action menu
             var action = await DisplayActionSheet(
                 $"Actions for: {product.Name}",
                 "Cancel",
@@ -120,7 +118,6 @@ namespace CRUDproduct
         {
             var text = $"{product.Name} - {product.Price:C} - {product.Category}";
 
-            // Copy to clipboard
             await Clipboard.Default.SetTextAsync(text);
             await DisplayAlert("Success", "Data copied to clipboard", "OK");
         }

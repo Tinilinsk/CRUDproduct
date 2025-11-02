@@ -3,38 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CRUDproduct.AddProduct"
              Title="Add Product">
-    <VerticalStackLayout>
-        <Label
-            Text="Enter product name:"
-            FontSize="Medium"
-            Margin="10"/>
-        <Entry
-            x:Name="NameProduct"
-            ></Entry>
-        <Label
-            Text="Price:"
-            FontSize="Medium"
-            Margin="10"></Label>
-        <Entry
-            x:Name="Price"></Entry>
-        <Label
-            Text="Category:"
-            FontSize="Medium"
-            Margin="10"></Label>
-        <Entry
-            x:Name="Category"></Entry>
-        <HorizontalStackLayout
-            HorizontalOptions="End">
-            <Button x:Name="OkButton" 
-                        Text="Add" 
-                        Grid.Column="1"
-                        Clicked="OnAddClicked"
-                        Margin="2"/>
-            <Button x:Name="CancelButton" 
-                        Text="Cancel" 
-                        Grid.Column="0"
-                        Clicked="OnCancelClicked"
-                        Margin="2"/>
-        </HorizontalStackLayout>
+    <VerticalStackLayout Spacing="15" Padding="30">
+
+        <Frame BorderColor="LightGray" CornerRadius="10" Padding="15">
+            <VerticalStackLayout Spacing="10">
+
+                <Label Text="Product Name:" FontSize="14"/>
+                <Entry x:Name="NameProduct" Placeholder="Enter product name"/>
+
+                <Label Text="Price:" FontSize="14"/>
+                <Entry x:Name="Price" Placeholder="0.00" Keyboard="Numeric"/>
+
+                <Label Text="Category:" FontSize="14"/>
+                <Entry x:Name="Category" Placeholder="Enter category"/>
+
+            </VerticalStackLayout>
+        </Frame>
+
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Button Text="Cancel" Grid.Column="0" Clicked="OnCancelClicked"/>
+            <Button Text="Add product" Grid.Column="1" Clicked="OnAddClicked" BackgroundColor="Green"/>
+        </Grid>
+
     </VerticalStackLayout>
 </ContentPage>
