@@ -23,13 +23,18 @@
             Margin="10"></Label>
         <Entry
             x:Name="Category"></Entry>
-        <Button x:Name="CancelButton" 
-                        Text="Cancel" 
-                        Grid.Column="0"
-                        Clicked="OnCancelClicked"/>
-        <Button x:Name="OkButton" 
+        <HorizontalStackLayout
+            HorizontalOptions="End">
+            <Button x:Name="OkButton" 
                         Text="Add" 
                         Grid.Column="1"
-                        Clicked="OnAddClicked"/>
+                        Clicked="OnAddClicked"
+                        Margin="2"/>
+            <Button x:Name="CancelButton" 
+                        Text="Cancel" 
+                        Grid.Column="0"
+                        Clicked="OnCancelClicked"
+                        Margin="2"/>
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>
