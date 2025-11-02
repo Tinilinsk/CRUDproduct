@@ -7,17 +7,36 @@
         <CollectionView ItemsSource="{Binding Products}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame BorderColor="LightGray" CornerRadius="10" Padding="15" Margin="5">
-                        <Grid ColumnDefinitions="*,Auto,Auto">
-                            <HorizontalStackLayout Grid.Column="0" Spacing="5" VerticalOptions="Center">
-                                <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"/>
-                                <Label Text="-" FontSize="16"/>
-                                <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="16" TextColor="Green"/>
-                                <Label Text="-" FontSize="16"/>
-                                <Label Text="{Binding Category}" FontSize="14" TextColor="Gray"/>
-                            </HorizontalStackLayout>
-                        </Grid>
-                    </Frame>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem Text="Edit" BackgroundColor="Orange"
+                               />
+                            <SwipeItem Text="Delete" BackgroundColor="Red"
+                               />
+                        </SwipeView.RightItems>
+                        <Frame BorderColor="LightGray" CornerRadius="10" Padding="15" Margin="5">
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <HorizontalStackLayout Grid.Column="0" Spacing="5" VerticalOptions="Center">
+                                    <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold"/>
+                                    <Label Text="-" FontSize="16"/>
+                                    <Label Text="{Binding Price, StringFormat='{0:C}'}" FontSize="16" TextColor="Green"/>
+                                    <Label Text="-" FontSize="16"/>
+                                    <Label Text="{Binding Category}" FontSize="14" TextColor="Gray"/>
+                                </HorizontalStackLayout>
+                                <Button Grid.Column="1" 
+                                Text="⋮" 
+                                FontSize="18"
+                                Clicked="OnMenuButtonClicked"
+                                CommandParameter="{Binding .}"
+                                BackgroundColor="Transparent"
+                                TextColor="Gray"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                VerticalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
