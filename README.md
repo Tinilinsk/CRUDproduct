@@ -43,8 +43,16 @@ A modern, cross-platform mobile application built with .NET MAUI for managing pr
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/maui-products-manager.git
-   cd maui-products-manager
+   git clone https://github.com/tinilinsk/CRUDproduct.git
+   cd CRUDproduct
+
+   ```bash
+   dotnet restore
+
+   ```bash
+   dotnet build
+
+   
 
 🎯 Usage
 Adding a Product
