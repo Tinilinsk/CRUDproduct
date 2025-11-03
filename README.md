@@ -48,10 +48,10 @@ A modern, cross-platform mobile application built with .NET MAUI for managing pr
   ```
    ```bash
    dotnet restore
-```
+  ```
    ```bash
    dotnet build
-```
+  ```
    
 
 🎯 Usage
