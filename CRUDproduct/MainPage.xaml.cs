@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using CRUDproduct.DB;
+
 
 namespace CRUDproduct
 {
@@ -10,6 +12,7 @@ namespace CRUDproduct
         private ObservableCollection<Product> _product = new();
         private int _nextId = 1;
         private readonly CsvExportService _csvExportService;
+        ProductDatabase database;
 
         public ObservableCollection<Product> Products { get { return _product; } }
         public int ProductsCount => _product.Count;
@@ -18,7 +21,19 @@ namespace CRUDproduct
             InitializeComponent();
             BindingContext = this;
 
-            _csvExportService = new CsvExportService(); 
+            _csvExportService = new CsvExportService();
+            database = new ProductDatabase();
+
+            var items = ShowProductFromDb();
+            foreach (Product item in items) {
+
+             }
+        }
+
+        public async Task<List<Product>> ShowProductFromDb()
+        {
+            
+            return await database.GetItemsAsync();
         }
         private async void OnExportCsvClicked(object sender, EventArgs e)
         {
@@ -37,6 +52,7 @@ namespace CRUDproduct
         private async void AddProductClicked(object sender, EventArgs e)
         {
             await ShowInputProduct();
+            
         }
 
         public async Task ShowInputProduct()
@@ -53,8 +69,12 @@ namespace CRUDproduct
                 newProduct.CreatedDate = DateTime.Now;
 
                 _product.Add(newProduct);
+                await database.SaveItemAsync(newProduct);
 
             }
+          
+
+
         }
 
         private async Task EditProduct(Product product)
