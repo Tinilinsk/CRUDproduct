@@ -46,9 +46,11 @@ A modern, cross-platform mobile application built with .NET MAUI for managing pr
    git clone https://github.com/tinilinsk/CRUDproduct.git
    cd CRUDproduct
   ```
-   
+2. **Restore project**
+  ```bash
    dotnet restore
   ```
+3. **Build projekt**
    ```bash
    dotnet build
   ```
