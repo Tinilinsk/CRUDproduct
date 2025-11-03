@@ -45,13 +45,13 @@ A modern, cross-platform mobile application built with .NET MAUI for managing pr
    ```bash
    git clone https://github.com/tinilinsk/CRUDproduct.git
    cd CRUDproduct
-
+  ```
    ```bash
    dotnet restore
-
+```
    ```bash
    dotnet build
-
+```
    
 
 🎯 Usage
