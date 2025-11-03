@@ -53,7 +53,7 @@ A modern, cross-platform mobile application built with .NET MAUI for managing pr
 3. **Build projekt**
    ```bash
    dotnet build
-  ```
+    ```
    
 
 🎯 Usage
