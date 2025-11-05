@@ -84,14 +84,10 @@ namespace CRUDproduct
         {
             try
             {
-                Debug.WriteLine("ShowInputProduct: Opening popup to add product");
-
                 var popup = new AddProduct();
                 await Navigation.PushModalAsync(popup);
 
                 var newProduct = await popup.ResultTask.Task;
-
-                Debug.WriteLine($"ShowInputProduct: Received product from popup - {newProduct?.Name ?? "null"}");
 
                 if (newProduct != null && !string.IsNullOrWhiteSpace(newProduct.Name))
                 {
@@ -159,8 +155,14 @@ namespace CRUDproduct
                 var index = _product.IndexOf(product);
                 if (index != -1)
                 {
-                    _product[index] = result;
-                    await DisplayAlert("Success", "Product updated successfully", "OK");
+                    try
+                    {
+                        _product[index] = result;
+                        await database.SaveItemAsync(result);
+                        await DisplayAlert("Success", "Product updated successfully", "OK");
+                    } catch (Exception ex) {
+                        Debug.WriteLine("Error with edit product: " + ex); 
+                    }
                 }
             }
         }
