@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using CRUDproduct.DB;
+
 
 namespace CRUDproduct
 {
@@ -10,6 +12,7 @@ namespace CRUDproduct
         private ObservableCollection<Product> _product = new();
         private int _nextId = 1;
         private readonly CsvExportService _csvExportService;
+        ProductDatabase database;
 
         public ObservableCollection<Product> Products { get { return _product; } }
         public int ProductsCount => _product.Count;
@@ -18,7 +21,44 @@ namespace CRUDproduct
             InitializeComponent();
             BindingContext = this;
 
-            _csvExportService = new CsvExportService(); 
+            _csvExportService = new CsvExportService();
+            database = new ProductDatabase();
+
+            _ = LoadProductsAsync();
+        }
+
+        public async Task<List<Product>> ShowProductFromDb()
+        {
+            return await database.GetItemsAsync();
+        }
+
+        private async Task LoadProductsAsync()
+        {
+            try
+            {
+                var items = await database.GetItemsAsync();
+
+                Debug.WriteLine($"📊 Получено записей: {items?.Count}");
+                if (items != null && items.Count > 0)
+                {
+                    foreach (var item in items.Take(5))
+                    {
+                        Debug.WriteLine($"📦 Товар: {item.Name}, Цена: {item.Price}");
+                    }
+                } 
+                else
+                {
+                    Debug.WriteLine("ℹ️ В базе нет записей");
+                }
+                foreach (Product item in items)
+                {
+                    _product.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Get products failed: {ex.Message}", "OK");
+            }
         }
         private async void OnExportCsvClicked(object sender, EventArgs e)
         {
@@ -37,23 +77,70 @@ namespace CRUDproduct
         private async void AddProductClicked(object sender, EventArgs e)
         {
             await ShowInputProduct();
+            
         }
 
         public async Task ShowInputProduct()
         {
-            var popup = new AddProduct();
-
-            await Navigation.PushModalAsync(popup);
-
-            var newProduct = await popup.ResultTask.Task;
-
-            if (newProduct != null && !string.IsNullOrWhiteSpace(newProduct.Name))
+            try
             {
-                newProduct.Id = _nextId++;
-                newProduct.CreatedDate = DateTime.Now;
+                var popup = new AddProduct();
+                await Navigation.PushModalAsync(popup);
 
-                _product.Add(newProduct);
+                var newProduct = await popup.ResultTask.Task;
 
+                if (newProduct != null && !string.IsNullOrWhiteSpace(newProduct.Name))
+                {
+                    newProduct.CreatedDate = DateTime.Now;
+
+                    Debug.WriteLine($"ShowInputProduct: Saving product to database - {newProduct.Name}");
+
+                    var saveResult = await database.SaveItemAsync(newProduct);
+
+                    Debug.WriteLine($"ShowInputProduct: Database save result - {saveResult}");
+
+                    if (saveResult > 0)
+                    {
+                        _product.Add(newProduct);
+
+                        Debug.WriteLine($"ShowInputProduct: Product added successfully. ID: {newProduct.Id}");
+                    }
+                    else
+                    {
+                        Debug.WriteLine("ShowInputProduct: Failed to save product to database");
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("ShowInputProduct: Product was not added (empty name or null)");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ShowInputProduct: Error - {ex.Message}");
+            }
+        }
+
+        private async Task ReloadProductsFromDatabase()
+        {
+            try
+            {
+                Debug.WriteLine("ReloadProductsFromDatabase: Refreshing list from database");
+
+                _product.Clear();
+
+                var productsFromDb = await database.GetItemsAsync();
+
+                Debug.WriteLine($"ReloadProductsFromDatabase: Loaded {productsFromDb.Count} products");
+
+                foreach (var product in productsFromDb)
+                {
+                    _product.Add(product);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ReloadProductsFromDatabase: Error - {ex.Message}");
             }
         }
 
@@ -68,8 +155,14 @@ namespace CRUDproduct
                 var index = _product.IndexOf(product);
                 if (index != -1)
                 {
-                    _product[index] = result;
-                    await DisplayAlert("Success", "Product updated successfully", "OK");
+                    try
+                    {
+                        _product[index] = result;
+                        await database.SaveItemAsync(result);
+                        await DisplayAlert("Success", "Product updated successfully", "OK");
+                    } catch (Exception ex) {
+                        Debug.WriteLine("Error with edit product: " + ex); 
+                    }
                 }
             }
         }
@@ -121,8 +214,18 @@ namespace CRUDproduct
 
             if (answer)
             {
-                _product.Remove(product);
-                await DisplayAlert("Success", "Product deleted", "OK");
+                try
+                {
+                    _product.Remove(product);
+                    await database.DeleteItemAsync(product);
+                    await DisplayAlert("Success", "Product deleted", "OK");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error with delete: " + ex);
+                }
+                
+                
             }
         }
         private async void OnSwipeDeleteInvoked(object sender, EventArgs e)
