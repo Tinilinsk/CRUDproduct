@@ -212,8 +212,18 @@ namespace CRUDproduct
 
             if (answer)
             {
-                _product.Remove(product);
-                await DisplayAlert("Success", "Product deleted", "OK");
+                try
+                {
+                    _product.Remove(product);
+                    await database.DeleteItemAsync(product);
+                    await DisplayAlert("Success", "Product deleted", "OK");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error with delete: " + ex);
+                }
+                
+                
             }
         }
         private async void OnSwipeDeleteInvoked(object sender, EventArgs e)
