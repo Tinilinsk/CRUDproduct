@@ -24,16 +24,41 @@ namespace CRUDproduct
             _csvExportService = new CsvExportService();
             database = new ProductDatabase();
 
-            var items = ShowProductFromDb();
-            foreach (Product item in items) {
-
-             }
+            _ = LoadProductsAsync();
         }
 
         public async Task<List<Product>> ShowProductFromDb()
         {
-            
             return await database.GetItemsAsync();
+        }
+
+        private async Task LoadProductsAsync()
+        {
+            try
+            {
+                var items = await database.GetItemsAsync();
+
+                Debug.WriteLine($"📊 Получено записей: {items?.Count}");
+                if (items != null && items.Count > 0)
+                {
+                    foreach (var item in items.Take(5))
+                    {
+                        Debug.WriteLine($"📦 Товар: {item.Name}, Цена: {item.Price}");
+                    }
+                } 
+                else
+                {
+                    Debug.WriteLine("ℹ️ В базе нет записей");
+                }
+                foreach (Product item in items)
+                {
+                    _product.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Get products failed: {ex.Message}", "OK");
+            }
         }
         private async void OnExportCsvClicked(object sender, EventArgs e)
         {
@@ -57,24 +82,70 @@ namespace CRUDproduct
 
         public async Task ShowInputProduct()
         {
-            var popup = new AddProduct();
-
-            await Navigation.PushModalAsync(popup);
-
-            var newProduct = await popup.ResultTask.Task;
-
-            if (newProduct != null && !string.IsNullOrWhiteSpace(newProduct.Name))
+            try
             {
-                newProduct.Id = _nextId++;
-                newProduct.CreatedDate = DateTime.Now;
+                Debug.WriteLine("ShowInputProduct: Opening popup to add product");
 
-                _product.Add(newProduct);
-                await database.SaveItemAsync(newProduct);
+                var popup = new AddProduct();
+                await Navigation.PushModalAsync(popup);
 
+                var newProduct = await popup.ResultTask.Task;
+
+                Debug.WriteLine($"ShowInputProduct: Received product from popup - {newProduct?.Name ?? "null"}");
+
+                if (newProduct != null && !string.IsNullOrWhiteSpace(newProduct.Name))
+                {
+                    newProduct.CreatedDate = DateTime.Now;
+
+                    Debug.WriteLine($"ShowInputProduct: Saving product to database - {newProduct.Name}");
+
+                    var saveResult = await database.SaveItemAsync(newProduct);
+
+                    Debug.WriteLine($"ShowInputProduct: Database save result - {saveResult}");
+
+                    if (saveResult > 0)
+                    {
+                        _product.Add(newProduct);
+
+                        Debug.WriteLine($"ShowInputProduct: Product added successfully. ID: {newProduct.Id}");
+                    }
+                    else
+                    {
+                        Debug.WriteLine("ShowInputProduct: Failed to save product to database");
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("ShowInputProduct: Product was not added (empty name or null)");
+                }
             }
-          
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ShowInputProduct: Error - {ex.Message}");
+            }
+        }
 
+        private async Task ReloadProductsFromDatabase()
+        {
+            try
+            {
+                Debug.WriteLine("ReloadProductsFromDatabase: Refreshing list from database");
 
+                _product.Clear();
+
+                var productsFromDb = await database.GetItemsAsync();
+
+                Debug.WriteLine($"ReloadProductsFromDatabase: Loaded {productsFromDb.Count} products");
+
+                foreach (var product in productsFromDb)
+                {
+                    _product.Add(product);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ReloadProductsFromDatabase: Error - {ex.Message}");
+            }
         }
 
         private async Task EditProduct(Product product)
